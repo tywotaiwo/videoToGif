@@ -2,6 +2,7 @@ use std::fs;
 use std::path::Path;
 use std::process::Command;
 use walkdir::WalkDir;
+use regex::Regex;
 
 fn main() {
     let input_folder = "videos"; // Change this to your folder
@@ -24,7 +25,12 @@ fn main() {
 // Function to convert MP4 to GIF using FFmpeg
 fn convert_to_gif(input_path: &Path, output_folder: &str) {
     let input_filename = input_path.file_stem().unwrap().to_str().unwrap();
-    let output_path = format!("{}/{}.gif", output_folder, input_filename);
+    
+    // Sanitize the filename to include only letters
+    let re = Regex::new(r"[^a-zA-Z]").unwrap();
+    let sanitized_filename = re.replace_all(input_filename, "");
+
+    let output_path = format!("{}/{}.gif", output_folder, sanitized_filename);
 
     let ffmpeg_command = Command::new("ffmpeg")
         .args([
