@@ -1,0 +1,12 @@
+use std::fs;
+use walkdir::WalkDir;
+mod sanitize;
+
+fn main() {
+    let input_folder = "videos"; // Change this to your folder
+
+    // Sanitize video filenames
+    sanitize::sanitize_video_filenames(input_folder);
+
+    println!("✅ All video filenames sanitized!");
+}
